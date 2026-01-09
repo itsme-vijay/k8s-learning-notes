@@ -1,4 +1,6 @@
-# Kubernetes Complete Theory 🚀
+## Kubernetes Architecture Diagram
+![Kubernetes Diagram](images/K8S.png)
+
 
 This repository contains my Kubernetes learning notes including:
 - Kubernetes Architecture
@@ -8,6 +10,3 @@ This repository contains my Kubernetes learning notes including:
 - Interview Questions
 
 📌 Created for learning + interview preparation.
-
-## Kubernetes Architecture Diagram
-![Kubernetes Diagram](images/K8S.png)
