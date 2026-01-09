@@ -10,4 +10,4 @@ This repository contains my Kubernetes learning notes including:
 📌 Created for learning + interview preparation.
 
 ## My Diagram
-![Kubernetes Diagram](images/k8s.png)
+![Kubernetes Diagram](images/K8S.png)
