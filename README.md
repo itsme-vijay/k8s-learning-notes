@@ -12,35 +12,59 @@ This repository contains my Kubernetes learning notes including:
 ## Kubernetes Architecture Diagram
 
 ```mermaid
-flowchart LR
+flowchart TB
 
-subgraph Cluster
-  subgraph Control_Plane["Control Plane"]
-    API[kube-api-server]
-    ETCD[etcd]
-    CM[kube-controller-manager]
-    SCH[kube-scheduler]
-    CCM[cloud-controller-manager]
+%% =========================
+%% Kubernetes Architecture (Corrected)
+%% =========================
+
+subgraph CLUSTER["Kubernetes Cluster"]
+  direction TB
+
+  %% ---------- Control Plane ----------
+  subgraph CP["Control Plane"]
+    direction LR
+    API["kube-api-server"]
+    ETCD["etcd"]
+    SCH["kube-scheduler"]
+    KCM["kube-controller-manager"]
+    CCM["cloud-controller-manager"]
+    CLOUD["Cloud Provider API"]
+
+    API <--> ETCD
+    SCH --> API
+    KCM --> API
+    CCM --> API
+    CCM -.-> CLOUD
   end
 
-  API <--> ETCD
-  CM --> API
-  SCH --> API
-  CCM --> API
+  %% ---------- Worker Node ----------
+  subgraph NODE1["Worker Node"]
+    direction TB
+    KUBELET["kubelet"]
+    KPROXY["kube-proxy"]
+    CRI["Container Runtime (containerd/CRI-O)"]
 
-  subgraph Node1["Worker Node 1"]
-    K1[kubelet]
-    KP1[kube-proxy]
-    CR1[Container Runtime]
-    P1[Pod]
-    P2[Pod]
+    %% Workloads
+    subgraph POD1["Pod (logical)"]
+      direction TB
+      C1["Container"]
+      C2["Container"]
+    end
+
+    %% Networking abstraction
+    SVC["Service (ClusterIP)"]
+
+    %% Correct relationships
+    KUBELET --> CRI
+    CRI --> C1
+    CRI --> C2
+
+    KPROXY --> SVC
+    SVC --> POD1
   end
 
-  K1 --> CR1
-  CR1 --> P1
-  CR1 --> P2
-  KP1 --> P1
+  %% Node <-> Control Plane communication
+  KUBELET <--> API
+  KPROXY <--> API
 end
-
-    Cloud[Cloud Provider API]
-    CCM -.-> Cloud
