@@ -22,8 +22,9 @@ Today I practiced the following:
 I used the commands below and understood **why each command is important**.
 
 ---
-
-kubectl version --short  
+```bash
+kubectl version
+``` 
 
 Why?  
 To confirm that kubectl is installed and connected to the Kubernetes cluster.
@@ -32,9 +33,9 @@ Analogy:
 Checking if the car key works before driving.
 
 ---
-
+```bash
 kubectl cluster-info  
-
+```
 Why?  
 To verify that the Kubernetes control plane is running and accessible.
 
@@ -42,9 +43,9 @@ Analogy:
 Checking if the city office is open.
 
 ---
-
+```bash
 kubectl get nodes  
-
+```
 Why?  
 Nodes are the machines (VMs/servers) where Pods run.  
 Status `Ready` means the machine can run applications.
@@ -53,9 +54,9 @@ Analogy:
 Buildings that are ready to open shops.
 
 ---
-
+```bash
 kubectl get pods  
-
+```
 Why?  
 To check which applications (Pods) are currently running in the cluster.  
 Initially, no Pods were running, which confirmed a clean environment.
@@ -64,9 +65,9 @@ Analogy:
 Checking which shops are open in the city.
 
 ---
-
+```bash
 kubectl run nginx-pod --image=nginx  
-
+```
 Why?  
 To quickly create a Pod for practice using the nginx image.  
 Kubernetes automatically pulls the image, creates the Pod, assigns it to a Node, and starts the container.
@@ -75,16 +76,16 @@ Analogy:
 Telling the city system to open one shop automatically.
 
 ---
-
+```bash
 kubectl get pods  
-
+```
 Why?  
 To confirm that the Pod was created successfully and is in `Running` state.
 
 ---
-
+```bash
 kubectl describe pod nginx-pod  
-
+```
 Why?  
 To view detailed information about the Pod such as:
 - Which Node it is running on
