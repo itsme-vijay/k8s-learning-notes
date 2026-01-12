@@ -1,191 +1,163 @@
-# Kubernetes Learning Notes – Day 01 (Hands-On Basics)
+I have started learning Kubernetes as a DevOps fresher and my main focus is to learn by doing.
+Instead of just reading theory, I am practicing hands-on and trying to understand why each command is used.
 
-This repository documents my Kubernetes learning as a DevOps fresher.
-I am focusing on **hands-on practice with clear understanding of why each command is used**.
+To avoid installation issues on my local system, I used the KillerKoda Kubernetes Playground.
+It gives a ready-made Kubernetes cluster in the browser, so I could directly focus on learning Kubernetes.
 
-To avoid local installation complexity, I practiced Kubernetes using the **KillerKoda Kubernetes Playground**, which provides a ready-to-use Kubernetes cluster in the browser.
+Today, this is what I practiced step by step:
 
----
+• Connected to a Kubernetes cluster
+• Checked Nodes and Pods
+• Created my first Pod using a command
+• Inspected Pod details
+• Created a Pod using YAML (real DevOps way)
+• Deleted the Pod to understand reproducible infrastructure
+• Checked application logs
+• Entered inside the container using exec
 
-Today I practiced the following:
-- Connected to a Kubernetes cluster
-- Checked Nodes and Pods
-- Created my first Pod using command
-- Inspected Pod details
-- Created Pod using YAML (real DevOps way)
-- Deleted Pod (reproducible infrastructure mindset)
-- Checked logs
-- Entered container using exec
+First, I checked whether kubectl was installed and connected properly.
 
----
+$ kubectl version
 
-I used the commands below and understood **why each command is important**.
+Why I used this:
+This helped me confirm that kubectl is available and connected to the Kubernetes cluster.
 
----
-```bash
-kubectl version
-``` 
+Simple way to think:
+Like checking if the car key works before starting the car.
 
-Why?  
-To confirm that kubectl is installed and connected to the Kubernetes cluster.
+Then, I checked if the Kubernetes cluster was actually running.
 
-Analogy:  
-Checking if the car key works before driving.
+$ kubectl cluster-info
 
----
-```bash
-kubectl cluster-info  
-```
-Why?  
-To verify that the Kubernetes control plane is running and accessible.
+Why I used this:
+To make sure the Kubernetes control plane is up and the cluster is ready to accept commands.
 
-Analogy:  
+Simple way to think:
 Checking if the city office is open.
 
----
-```bash
-kubectl get nodes  
-```
-Why?  
-Nodes are the machines (VMs/servers) where Pods run.  
-Status `Ready` means the machine can run applications.
+After that, I checked the Nodes in the cluster.
 
-Analogy:  
+$ kubectl get nodes
+
+Why I used this:
+Nodes are the machines (VMs or servers) where applications run.
+If the node status is Ready, it means Kubernetes can run Pods on it.
+
+Simple way to think:
 Buildings that are ready to open shops.
 
----
-```bash
-kubectl get pods  
-```
-Why?  
-To check which applications (Pods) are currently running in the cluster.  
-Initially, no Pods were running, which confirmed a clean environment.
+Next, I checked if any Pods were already running.
 
-Analogy:  
-Checking which shops are open in the city.
+$ kubectl get pods
 
----
-```bash
-kubectl run nginx-pod --image=nginx  
-```
-Why?  
-To quickly create a Pod for practice using the nginx image.  
-Kubernetes automatically pulls the image, creates the Pod, assigns it to a Node, and starts the container.
+Why I used this:
+To see what applications are already running in the cluster.
+No Pods were running, which confirmed that the environment was clean.
 
-Analogy:  
-Telling the city system to open one shop automatically.
+Simple way to think:
+Checking which shops are already open.
 
----
-```bash
-kubectl get pods  
-```
-Why?  
-To confirm that the Pod was created successfully and is in `Running` state.
+Then I created my first Pod.
 
----
-```bash
-kubectl describe pod nginx-pod  
-```
-Why?  
-To view detailed information about the Pod such as:
-- Which Node it is running on
-- Container details
-- Events and errors (if any)
+$ kubectl run nginx-pod --image=nginx
 
-This command is very important for troubleshooting.
+Why I used this:
+This command quickly creates a Pod using the nginx image.
+Kubernetes automatically pulls the image, decides where to run it, and starts the container.
 
-Analogy:  
-Viewing a full shop report including location and activity log.
+Simple way to think:
+Telling the system to open one shop automatically.
 
----
+After creating the Pod, I checked its status.
 
-I then created a Pod using YAML, which is the **real DevOps approach**.
+$ kubectl get pods
 
-pod.yaml file used:
+Why I used this:
+To confirm that the Pod is created and running successfully.
 
-apiVersion: v1  
-kind: Pod  
-metadata:  
-  name: my-first-yaml-pod  
-spec:  
-  containers:  
-  - name: nginx-container  
-    image: nginx  
+Next, I inspected the Pod in detail.
 
-Why YAML?  
-YAML allows declarative configuration where we tell Kubernetes **what we want**, and Kubernetes handles **how to do it**.  
-This makes infrastructure reproducible and version-controlled using Git.
+$ kubectl describe pod nginx-pod
 
-Analogy:  
-Submitting a written form instead of giving verbal instructions.
+Why I used this:
+This shows detailed information like which Node the Pod is running on, container details, and events.
+This command is very useful when something goes wrong.
 
----
+Simple way to think:
+Looking at a full shop report including location and activity.
 
-kubectl apply -f pod.yaml  
+After that, I created a Pod using YAML, which is how things are done in real DevOps projects.
 
-Why?  
-To create the Pod from the YAML file.  
-This is the preferred command used in real production environments.
+The pod.yaml file I used:
 
----
+apiVersion: v1
+kind: Pod
+metadata:
+name: my-first-yaml-pod
+spec:
+containers:
 
-kubectl get pods  
+name: nginx-container
+image: nginx
 
-Why?  
-To confirm that the Pod created using YAML is running successfully.
+Why YAML:
+YAML lets us define what we want, and Kubernetes handles how to do it.
+This makes everything reusable and easy to manage using Git.
 
----
+Simple way to think:
+Giving written instructions instead of verbal ones.
 
-kubectl describe pod my-first-yaml-pod  
+Then I applied the YAML file.
 
-Why?  
-To verify Node assignment, container status, and events for the YAML-created Pod.
+$ kubectl apply -f pod.yaml
 
----
+Why I used this:
+This creates the Pod using the YAML file.
+This is the preferred and real-world way of deploying things in Kubernetes.
 
-kubectl delete pod my-first-yaml-pod  
+I checked the Pods again.
 
-Why?  
-Pods can be deleted safely because they can be recreated anytime from YAML.  
-This helps build the DevOps mindset that infrastructure is temporary and reproducible.
+$ kubectl get pods
 
-Analogy:  
-Closing a shop because you can reopen it anytime using the same plan.
+Why I used this:
+To confirm that the Pod created using YAML is running properly.
 
----
+Then I inspected the YAML-created Pod.
 
-kubectl logs nginx-pod  
+$ kubectl describe pod my-first-yaml-pod
 
-Why?  
-To view application logs.  
-This is the first step when debugging application issues.
+Why I used this:
+To check Node assignment, container status, and events.
 
-Analogy:  
-Checking CCTV or activity register of a shop.
+After that, I deleted the Pod.
 
----
+$ kubectl delete pod my-first-yaml-pod
 
-kubectl exec -it nginx-pod -- /bin/bash  
+Why I used this:
+In Kubernetes, Pods are temporary and can be recreated anytime using YAML.
+Deleting Pods helps build the DevOps mindset of reproducible infrastructure.
 
-Why?  
-To enter inside the running container and inspect files or processes.  
-This is useful for troubleshooting in real environments.
+Simple way to think:
+Closing a shop because you can open it again anytime using the same plan.
 
-Inside the container I used:
-ls  
-exit  
+Next, I checked application logs.
 
----
+$ kubectl logs nginx-pod
 
-What I learned today:
-- Kubernetes manages containers automatically
-- Pod is the smallest deployable unit
-- Node is the machine where Pods run
-- kubectl get and describe are core commands
-- YAML is the real DevOps way of working
-- Logs and exec are essential for debugging
+Why I used this:
+Logs help understand what the application is doing and are the first thing to check during debugging.
 
----
+Simple way to think:
+Checking CCTV or activity logs.
 
-Next step:
-Learning Deployments, ReplicaSets, and self-healing in Kubernetes.
+Finally, I entered inside the running container.
+
+$ kubectl exec -it nginx-pod -- /bin/bash
+
+Why I used this:
+This allows direct access inside the container to check files or processes.
+It is helpful for troubleshooting in real environments.
+
+Inside the container, I ran:
+ls
+exit
