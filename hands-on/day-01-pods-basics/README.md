@@ -32,12 +32,67 @@ Goal: Learn the most important beginner concepts: **Cluster, Node, Pod, kubectl,
 kubectl version --short
 ```
 
-To confirm kubectl is working and connected to Kubernetes cluster.
-Analogy: Before driving, you check the car key works.
+-To confirm kubectl is working and connected to Kubernetes cluster.
+-Analogy: Before driving, you check the car key works.
 
 ```bash
 kubectl cluster-info
 ```
 
-To verify the cluster is running and see control plane endpoints.
-Confirms: “Yes, this Kubernetes city is active.”
+-To verify the cluster is running and see control plane endpoints.
+
+```bash
+kubectl get nodes
+```
+-Nodes are the machines where Pods run.
+-Ready means the machine is healthy and can run apps.
+
+
+
+
+
+```bash
+```
+
+```bash
+```
+
+```bash
+```
+
+```bash
+```
+
+```bash
+```
+
+```bash
+```
+
+```bash
+```
+
+```bash
+```
+
+```bash
+```
+
+```bash
+```
+
+```bash
+```
+
+```bash
+```
+
+```bash
+```
+
+```bash
+```
+
+```bash
+```
+
